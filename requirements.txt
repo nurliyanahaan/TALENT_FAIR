@@ -1,6 +1,4 @@
-pandas 
-graph_objs
-scikit-learn
-GridOptionsBuilder
-AgGrid
-option_menu
+pandas ==1.4.4
+streamlit ==1.17.0
+Image == 9.3.0
+plotly == 5.9.0
