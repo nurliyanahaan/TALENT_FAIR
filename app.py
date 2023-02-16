@@ -2,12 +2,11 @@ import streamlit as st
 from PIL import Image
 import pandas as pd
 import numpy as np
-import pickle
 import time
 from plotly import graph_objs as go
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
-from streamlit_option_menu import option_menu
+
 
 # ---- Config & setting page icon and title ----
 app_icon = Image.open("logo.png")
