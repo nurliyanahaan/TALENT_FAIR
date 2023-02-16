@@ -1,0 +1,3 @@
+link streamlit :
+
+https://nurliyanahaan-talent-fair-app-yr6z2u.streamlit.app/
