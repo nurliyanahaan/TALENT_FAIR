@@ -6,11 +6,11 @@ import time
 from plotly import graph_objs as go
 from st_aggrid import AgGrid
 from st_aggrid.grid_options_builder import GridOptionsBuilder
-
+import base64
 
 # ---- Config & setting page icon and title ----
 app_icon = Image.open("logo.png")
-st.set_page_config(page_title="Sales Forecasting - Kalbe", page_icon=app_icon, layout="centered")
+st.set_page_config(page_title="Sales Forecasting", page_icon=app_icon, layout="centered")
 
 # ---- Hiding the menu and streamlit footer note ----
 hide_menu = """
@@ -21,29 +21,33 @@ hide_menu = """
             """
 st.markdown(hide_menu, unsafe_allow_html=True)
 
+def add_bg_from_local(image_file):
+    with open(image_file, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read())
+    st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url(data:image/{"jpg"};base64,{encoded_string.decode()});
+        background-size: cover
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+    )
+add_bg_from_local('2.jpg') 
+
 
 # ---- Setting the header and tagline -----
 
-st.title("Sales Forecasting - Kalbe")
-title_alignment="""
-<style>
-#Sales Forecasting {
-text-align: center
-}
-</style>
-"""
-st.markdown(title_alignment, unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>--Sales Forecasting-- </h1>", unsafe_allow_html=True)
 
-background = Image.open("logo.png")
-col1, col2, col3 = st.columns([0.2, 5, 0.2])
-col2.image(background, use_column_width=True)
+
 
 with st.form(key='form1'):
 
-        st.write('''
-            ### Please Choose Category and Product
-            ''')
-        
+        st.markdown("<h4 style='text-align: left;'>Please Select The Category and Product You Want to Predict </h4>", unsafe_allow_html=True)
+
         option = st.selectbox(
         'Category-Product',
         ('A-A1', 'A-A2', 'B-B1','B-B2'))
@@ -58,28 +62,25 @@ if submit_button:
 
         
         st.success(option)
-        st.write('Your option: ', option, 'Here you go ! The Sales Forcasting of Selected Category:')
+        st.write('Your option is: ', option, '. Here you go ! The Sales Forcasting of the selected Category and Product:')
 
 # ---- RESULTS CONDITION ----
 if option == "A-A1": 
-    def data_upload():
-        forecast_A1 = pd.read_csv('data/Forecast A1.csv')
-        forecast_A1 = forecast_A1.drop(columns='Unnamed: 0')
-        return forecast_A1
-
-    forecast_A1 = data_upload()
-        
-        
+    
+    forecast_A1 = pd.read_csv('Forecast A1.csv')
+    
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category A Product A1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
             data = go.Scatter(
-                
+                x = forecast_A1['Day'],
                 y = forecast_A1['Sales'],
                 name = "Forecast ARIMA"
                 ))
-    fig.layout.update(title_text="Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
+    fig.layout.update(title_text="Sales Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("Forecast Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>Forecast Details :</h5>", unsafe_allow_html=True)
+    
     gd = GridOptionsBuilder.from_dataframe(forecast_A1)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
@@ -87,7 +88,7 @@ if option == "A-A1":
 
 
 
-    data_A1 = pd.read_csv('data/Data A1.csv')
+    data_A1 = pd.read_csv('Data A1.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category A Product A1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
@@ -95,34 +96,33 @@ if option == "A-A1":
                     y = data_A1['Sales'],
                     name = "Forecast ARIMA"
                     ))
-    fig.layout.update(title_text="History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
+    fig.layout.update(title_text="Data History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("History Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>History Details :</h5>", unsafe_allow_html=True)
     gd = GridOptionsBuilder.from_dataframe(data_A1)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
     AgGrid(data_A1, gridOptions=gridoption, height=250, reload_data=True)
+    st.write("History details are available in the last 90 days.")
+
 #========================================================================
 
 if option == "A-A2": 
-    def data_upload():
-        forecast_A2 = pd.read_csv('data/Forecast A2.csv')
-        forecast_A2 = forecast_A2.drop(columns='Unnamed: 0')
-        return forecast_A2
 
-    forecast_A2 = data_upload()
-        
-        
+    forecast_A2 = pd.read_csv('Forecast A2.csv')
+    
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category A Product A2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
             data = go.Scatter(
-                
+                x = forecast_A2['Day'],
                 y = forecast_A2['Sales'],
                 name = "Forecast ARIMA",
                 line = {'color': 'green'}))
-    fig.layout.update(title_text="Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
+    fig.layout.update(title_text="Sales Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("Forecast Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>Forecast Details :</h5>", unsafe_allow_html=True)
     gd = GridOptionsBuilder.from_dataframe(forecast_A2)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
@@ -130,7 +130,7 @@ if option == "A-A2":
 
 
 
-    data_A2 = pd.read_csv('data/Data A2.csv')
+    data_A2 = pd.read_csv('Data A2.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category A Product A2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
@@ -138,9 +138,10 @@ if option == "A-A2":
                     y = data_A2['Sales'],
                     name = "Forecast ARIMA",
                     line = {'color': 'green'}))
-    fig.layout.update(title_text="History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
+    fig.layout.update(title_text="Data History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("History Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>History Details :</h5>", unsafe_allow_html=True)
     gd = GridOptionsBuilder.from_dataframe(data_A2)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
@@ -149,31 +150,27 @@ if option == "A-A2":
 
 
 if option == "B-B1": 
-    def data_upload():
-        forecast_B1 = pd.read_csv('data/Forecast B1.csv')
-        forecast_B1 = forecast_B1.drop(columns='Unnamed: 0')
-        return forecast_B1
-
-    forecast_B1 = data_upload()
-        
-        
+    
+    forecast_B1 = pd.read_csv('Forecast B1.csv')
+  
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category B Product B1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
             data = go.Scatter(
-                
+                x = forecast_B1['Day'],
                 y = forecast_B1['Sales'],
                 name = "Forecast ARIMA",
                 line = {'color': 'yellow'}))
-    fig.layout.update(title_text="Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
+    fig.layout.update(title_text="Sales Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("Forecast Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>Forecast Details :</h5>", unsafe_allow_html=True)
     gd = GridOptionsBuilder.from_dataframe(forecast_B1)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
     AgGrid(forecast_B1, gridOptions=gridoption, height=250, reload_data=True)
 
 
-    data_B1 = pd.read_csv('data/Data B1.csv')
+    data_B1 = pd.read_csv('Data B1.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category B Product B1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
@@ -181,9 +178,10 @@ if option == "B-B1":
                     y = data_B1['Sales'],
                     name = "Forecast ARIMA",
                     line = {'color': 'yellow'}))
-    fig.layout.update(title_text="History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
+    fig.layout.update(title_text="Data History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("History Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>History Details :</h5>", unsafe_allow_html=True)
     gd = GridOptionsBuilder.from_dataframe(data_B1)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
@@ -193,24 +191,20 @@ if option == "B-B1":
 
 
 if option == "B-B2": 
-    def data_upload():
-        forecast_B2 = pd.read_csv('data/Forecast B2.csv')
-        forecast_B2 = forecast_B2.drop(columns='Unnamed: 0')
-        return forecast_B2
-
-    forecast_B2 = data_upload()
-        
-        
+    
+    forecast_B2 = pd.read_csv('Forecast B2.csv')
+     
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category B Product B2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
             data = go.Scatter(
-                
+                x = forecast_B2['Day'],
                 y = forecast_B2['Sales'],
                 name = "Forecast ARIMA",
                 line = {'color': 'red'}))
-    fig.layout.update(title_text="Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
+    fig.layout.update(title_text="Sales Forecast", xaxis_rangeslider_visible=True, yaxis_title='Sales',xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("Forecast Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>Forecast Details :</h5>", unsafe_allow_html=True)
     gd = GridOptionsBuilder.from_dataframe(forecast_B2)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
@@ -218,7 +212,7 @@ if option == "B-B2":
 
 
 
-    data_B2 = pd.read_csv('data/Data B2.csv')
+    data_B2 = pd.read_csv('Data B2.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category B Product B2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
@@ -226,9 +220,10 @@ if option == "B-B2":
                     y = data_B2['Sales'],
                     name = "Forecast ARIMA",
                     line = {'color': 'red'}))
-    fig.layout.update(title_text="History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
+    fig.layout.update(title_text="Data History", xaxis_rangeslider_visible=True, yaxis_title='Sales', xaxis_title='Day')
     st.plotly_chart(fig)
-    st.write("History Result")
+    st.write("Please move the cursor towards the chart to see detailed data or you can drag the pointer on the day section. Details provide in table below.")
+    st.markdown("<h5 style='text-align: left;'>History Details :</h5>", unsafe_allow_html=True)
     gd = GridOptionsBuilder.from_dataframe(data_B2)
     gd.configure_pagination(enabled=True)
     gridoption = gd.build()
