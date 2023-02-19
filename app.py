@@ -67,7 +67,7 @@ if submit_button:
 # ---- RESULTS CONDITION ----
 if option == "A-A1": 
     
-    forecast_A1 = pd.read_csv('Forecast A1.csv')
+    forecast_A1 = pd.read_csv('data/Forecast A1.csv')
     
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category A Product A1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
@@ -88,7 +88,7 @@ if option == "A-A1":
 
 
 
-    data_A1 = pd.read_csv('Data A1.csv')
+    data_A1 = pd.read_csv('data/Data A1.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category A Product A1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
@@ -110,7 +110,7 @@ if option == "A-A1":
 
 if option == "A-A2": 
 
-    forecast_A2 = pd.read_csv('Forecast A2.csv')
+    forecast_A2 = pd.read_csv('data/Forecast A2.csv')
     
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category A Product A2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
@@ -130,7 +130,7 @@ if option == "A-A2":
 
 
 
-    data_A2 = pd.read_csv('Data A2.csv')
+    data_A2 = pd.read_csv('data/Data A2.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category A Product A2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
@@ -151,7 +151,7 @@ if option == "A-A2":
 
 if option == "B-B1": 
     
-    forecast_B1 = pd.read_csv('Forecast B1.csv')
+    forecast_B1 = pd.read_csv('data/Forecast B1.csv')
   
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category B Product B1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
@@ -170,7 +170,7 @@ if option == "B-B1":
     AgGrid(forecast_B1, gridOptions=gridoption, height=250, reload_data=True)
 
 
-    data_B1 = pd.read_csv('Data B1.csv')
+    data_B1 = pd.read_csv('data/Data B1.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category B Product B1</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
@@ -192,7 +192,7 @@ if option == "B-B1":
 
 if option == "B-B2": 
     
-    forecast_B2 = pd.read_csv('Forecast B2.csv')
+    forecast_B2 = pd.read_csv('data/Forecast B2.csv')
      
     st.markdown("<h4 style='text-align: center;'>Sales Forcasting Up To 14 Days - Category B Product B2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
@@ -212,7 +212,7 @@ if option == "B-B2":
 
 
 
-    data_B2 = pd.read_csv('Data B2.csv')
+    data_B2 = pd.read_csv('data/Data B2.csv')
     st.markdown("<h4 style='text-align: center;'> Data History - Category B Product B2</h4>", unsafe_allow_html=True)
     fig = go.Figure(
                 data = go.Scatter(
